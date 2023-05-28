@@ -1,13 +1,11 @@
-import NextAuth from "next-auth"
+import NextAuth, { AuthOptions, Session } from "next-auth"
 import CredentialsProvider from "next-auth/providers/credentials";
-import { MongoDBAdapter } from "@next-auth/mongodb-adapter"
-import mongoClient from '../../../utils/mongo-db'
 import dbConnect from '../../../utils/mongose'
 import User from '../../../models/user.model'
 import { compare } from 'bcrypt' 
 
-export const authOptions = {
-	// adapter: MongoDBAdapter(mongoClient),
+export const authOptions: AuthOptions = {
+
 	providers: [
 		CredentialsProvider({
 			name: "Credentials",
@@ -41,18 +39,22 @@ export const authOptions = {
 		})
 	],
 	callbacks: {
-		async session( {session, token}){
-			return {
-				user: {
-					id: token.sub,
-					...session.user,
-				}
-			}
-		},
-		async jwt(params) {
+		async jwt(params: any) {
 			const {token, user} = params;
+			if(token && user) {
+				token.points = user.points;
+			}
+
       return token
-    }
+    },
+		session( {session, token}){
+
+			if(token && session.user) {
+				session.user.points = token.points
+			}
+
+			return session
+		}
 	}
 }
 export default NextAuth(authOptions)

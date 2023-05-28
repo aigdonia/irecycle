@@ -1,6 +1,6 @@
 import { getSession } from "next-auth/react";
 import GlobalNavigation from "./global-navigation";
-import { GetServerSideProps } from "next";
+import { GetServerSideProps, GetServerSidePropsContext } from "next";
 import { Session } from "next-auth";
 
 interface LayoutProps {
@@ -24,7 +24,7 @@ const InnerPortalLayout = ({ children }: LayoutProps) => {
 
 export default InnerPortalLayout;
 
-export async function getServerSideProps({req}): GetServerSideProps<{session: Session}> {
+export async function getServerSideProps({req}: GetServerSidePropsContext) {
 	const session = await getSession({req})
 
 	if(!session) {

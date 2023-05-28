@@ -43,10 +43,8 @@ const SignupPage = () => {
 				}
 			})
 
-			if (!res.error) {
 				await loginUser(email, password)
 				redirectHome();
-			}
 
 		} catch (error) {
 			console.error(error)

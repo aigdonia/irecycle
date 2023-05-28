@@ -4,6 +4,7 @@ import { Field, Formik, Form } from "formik";
 import { signIn } from 'next-auth/react'
 import Router from 'next/router'
 import axios from "axios";
+import Link from "next/link";
 
 const LoginPage = () => {
 	const loginInitialValues = {
@@ -70,7 +71,7 @@ const LoginPage = () => {
 						)}
 					</Formik>
 					<div>
-						<span>Not a user? <a href="/signup" >Signup Now</a></span>
+						<span>Not a user? <Link href="/signup" >Signup Now</Link></span>
 					</div>
 				</div>
 			</div>

@@ -8,10 +8,10 @@ interface MetricLink {
 }
 
 interface MetricBoxProps {
-	color?: string,
+	color?: "neutral" | "slate" | "gray" | "zinc" | "stone" | "red" | "orange" | "amber" | "yellow" | "lime" | "green" | "emerald" | "teal" | "cyan" | "sky" | "blue" | "indigo" | "violet" | "purple" | "fuchsia" | "pink" | "rose" | undefined,
 	label: string,
 	metric: string,
-	icon?: JSX.Element,
+	icon?: React.ElementType<any>,
 	links?: MetricLink[]
 }
 
@@ -40,7 +40,7 @@ function MetricCardLinks({ links }: { links: MetricLink[] }) {
 	)
 }
 
-export default function MetricBox({ label, metric, icon, color = 'neutral', links }: MetricBoxProps) {
+export default function MetricBox({ label, metric, icon, color = 'neutral', links=[] }: MetricBoxProps) {
 	return (
 		<Card decoration="top" decorationColor={color}>
 			<Flex justifyContent="start" className="space-x-4">

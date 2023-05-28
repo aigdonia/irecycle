@@ -4,7 +4,7 @@ import Layout from '@/layout/inner-layout'
 import { GiftIcon, TruckIcon, ExclamationCircleIcon, ArchiveBoxIcon, LifebuoyIcon } from '@heroicons/react/24/outline'
 import { getSession, useSession } from "next-auth/react";
 import { getServerSession } from 'next-auth/next'
-import { GetServerSideProps } from "next";
+import { GetServerSideProps, GetServerSidePropsContext } from "next";
 import { Session } from "next-auth";
 import { authOptions } from "@/pages/api/auth/[...nextauth]";
 import MetricBox from "@/components/metric-box";
@@ -12,6 +12,13 @@ import RequestBagsModal from './request-bag-modal'
 import User from "@/models/user.model";
 import axios from "axios";
 import dayjs from "dayjs";
+
+interface PickupRequst {
+	requestId: string,
+	date: string,
+	status: string,
+	reward_points: string
+}
 
 const colors: { [key: string]: Color } = {
 	scheduled: "blue",
@@ -21,12 +28,13 @@ const colors: { [key: string]: Color } = {
 
 const shortenId = (passedId: String) => passedId.substring(8, -1)
 
-export default function KpiCardGrid() {
+export default function CustomerMainPage() {
 
-	const { data: { user } } = useSession();
-	const points = user.points ?? 10;
+	const { data } = useSession();
+	const user = data?.user;
+	const points = user?.points ?? 10;
 
-	const [requests, setRequests] = useState([])
+	const [requests, setRequests] = useState<PickupRequst[]>([])
 
 	useEffect(() => {
 		fetchPickups().then(r => {
@@ -73,15 +81,15 @@ export default function KpiCardGrid() {
 
 										<TableBody>
 											{requests && requests?.map((item) => (
-												<TableRow key={item.requestId}>
-													<TableCell>{shortenId(item.requestId)}</TableCell>
-													<TableCell>{dayjs(item.date).format('dddd DD MMM')}</TableCell>
+												<TableRow key={item?.requestId}>
+													<TableCell>{shortenId(item?.requestId)}</TableCell>
+													<TableCell>{dayjs(item?.date).format('dddd DD MMM')}</TableCell>
 													<TableCell>
-														<Badge color={colors[item.status]} size="xs">
-															{item.status}
+														<Badge color={colors[item?.status]} size="xs">
+															{item?.status}
 														</Badge>
 													</TableCell>
-													<TableCell className="text-right">{item.reward_points}</TableCell>
+													<TableCell className="text-right">{item?.reward_points}</TableCell>
 													<TableCell>
 														<Button size="xs" variant="secondary" color="gray" icon={LifebuoyIcon}>
 															Help?
@@ -125,7 +133,7 @@ export default function KpiCardGrid() {
 
 								<MetricBox
 									label="Points"
-									metric={points}
+									metric={points.toString()}
 									icon={GiftIcon}
 									color="green"
 									links={[
@@ -155,7 +163,7 @@ export default function KpiCardGrid() {
 const fetchPickups = async () => {
 	const { data: { requests } } = await axios.get('/api/pickup-request');
 	// return undefined;
-	return requests?.map(request => ({
+	return requests?.map((request: any) => ({
 		requestId: request._id,
 		date: request.scheduledDate,
 		status: request.status,
@@ -167,26 +175,26 @@ const scheduleDummyPickup = async () => {
 	const res = await axios.post('/api/pickup-request', { date: "20/05/2023" })
 }
 
-export async function getServerSideProps(ctx): GetServerSideProps<{ session: Session }> {
+// export async function getServerSideProps(ctx: GetServerSidePropsContext) {
 
-	const { req, res } = ctx
-	const session = await getServerSession(req, res, authOptions)
+// 	const { req, res } = ctx
+// 	const session = await getServerSession(req, res, authOptions)
 
-	if (!session) {
-		return { redirect: { destination: "/login", permenant: false } }
-	}
+// 	if (!session) {
+// 		return { redirect: { destination: "/login", permenant: false } }
+// 	}
 
-	const currentUser = await User.findById(session.user.id);
+// 	const currentUser = await User.findById(session?.user?.id);
 
-	return {
-		props: {
-			session: {
-				user: {
-					name: session.user.name,
-					email: session.user.email,
-					points: currentUser.points,
-				}
-			}
-		}
-	}
-}
+// 	return {
+// 		props: {
+// 			session: {
+// 				user: {
+// 					name: session?.user?.name,
+// 					email: session?.user?.email,
+// 					points: currentUser?.points,
+// 				}
+// 			}
+// 		}
+// 	}
+// }

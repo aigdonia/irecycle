@@ -11,6 +11,13 @@ interface CategoryToggleBoxProps {
 	children: JSX.Element
 }
 
+interface IWasteCategory {
+	name?: string,
+	displayName?: string,
+	color?: "neutral" | "slate" | "gray" | "zinc" | "stone" | "red" | "orange" | "amber" | "yellow" | "lime" | "green" | "emerald" | "teal" | "cyan" | "sky" | "blue" | "indigo" | "violet" | "purple" | "fuchsia" | "pink" | "rose" | undefined,
+	accent?: string
+}
+
 function CategoryToggleBox({ category, isToggled, handleClick, color = "slate", colorAccent = "100", children }: CategoryToggleBoxProps) {
 	const boxColorStyle = (color: string): string => (`bg-${color}-${colorAccent} border-${color}-400`)
 	return (
@@ -41,7 +48,7 @@ export default function ModalRequestBags() {
 
 	}
 
-	const handleCategoryToggle = (value) => {
+	const handleCategoryToggle = (value: string) => {
 		if (checkedValues.includes(value)) {
 			setCheckedValues(checkedValues.filter((item) => item !== value));
 		} else {
@@ -49,11 +56,11 @@ export default function ModalRequestBags() {
 		}
 	};
 
-	const isToggled = (value) => {
+	const isToggled = (value: string) => {
 		return checkedValues.includes(value);
 	};
 
-	const wasteCategories = [
+	const wasteCategories: IWasteCategory[] = [
 		{ name: "paper", displayName: "Paper", color: "blue" },
 		{ name: "organic", displayName: "Organic", color: "stone" },
 		{ name: "glass", displayName: "Glass", color: "green" },
@@ -61,8 +68,6 @@ export default function ModalRequestBags() {
 		{ name: "plastic", displayName: "Plastic", color: "yellow" },
 		{ name: "ewaste", displayName: "E-Waste", color: "rose" },
 	]
-
-
 
 	return (
 		<>
@@ -101,9 +106,9 @@ export default function ModalRequestBags() {
 									<CategoryToggleBox
 										key={c.name}
 										color={c.color}
-										category={c.name}
-										isToggled={isToggled(c.name)}
-										handleClick={(name) => handleCategoryToggle(name)}
+										category={c?.name ?? ""}
+										isToggled={isToggled(c?.name ?? "")}
+										handleClick={async (name) => handleCategoryToggle(name)}
 										colorAccent={c?.accent ? c.accent : undefined}
 									>
 										<Flex flexDirection="col" justifyContent="center" alignItems="center">

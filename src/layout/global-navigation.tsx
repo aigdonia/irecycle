@@ -4,7 +4,22 @@ import { Dropdown, DropdownItem, Icon } from "@tremor/react";
 import { signOut } from 'next-auth/react';
 import { UserIcon } from '@heroicons/react/24/outline';
 
-const navigation = {
+interface NavLink {
+  name: string;
+  href: string;
+  current: boolean;
+}
+
+interface NavigationLinks {
+  [key: string]: NavLink[];
+}
+
+interface SidebarProps {
+  activeSection: string;
+  sidebarLinks: NavigationLinks;
+}
+
+const navigation: NavigationLinks = {
 	app_user: [
 		{ name: 'Home', href: '/main', current: false },
 		{ name: 'Stores', href: '/store', current: false },
@@ -70,7 +85,7 @@ export default function GlobalLayout() {
 										onValueChange={(value) => setPersona(value)}
 										placeholder="Pick User Type"
 									>
-										{personas.map(p => (<DropdownItem value={p} text={p} />))}
+										{personas.map(p => (<DropdownItem key={p} value={p} text={p} />))}
 									</Dropdown>
 								</div>
 
