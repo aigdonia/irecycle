@@ -2,7 +2,7 @@ import NextAuth, { AuthOptions, Session } from "next-auth"
 import CredentialsProvider from "next-auth/providers/credentials";
 import dbConnect from '../../../utils/mongose'
 import User from '../../../models/user.model'
-import { compare } from 'bcrypt' 
+import { compare } from 'bcryptjs' 
 
 export const authOptions: AuthOptions = {
 
@@ -51,6 +51,7 @@ export const authOptions: AuthOptions = {
 
 			if(token && session.user) {
 				session.user.points = token.points
+				session.user.id = token.sub ?? "";
 			}
 
 			return session

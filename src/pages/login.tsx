@@ -34,8 +34,8 @@ const LoginPage = () => {
 					className="text-center mx-auto pb-6"
 					src='/irecycle-logo.png'
 					alt="Logo"
-					width={60}
-					height={60}
+					width={196}
+					height={196}
 				/>
 				<h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">Sign in to your account</h2>
 			</div>
@@ -53,10 +53,10 @@ const LoginPage = () => {
 					>
 						{(props) => (
 							<Form>
-								<label htmlFor="email" className="block text-sm font-medium text-gray-700"> Email </label>
+								<label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2"> Email </label>
 								<Field type="email" name="email" className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" />
 
-								<label htmlFor="password" className="block text-sm font-medium text-gray-700"> Password </label>
+								<label htmlFor="password" className="block text-sm font-medium text-gray-700 mt-4 mb-2"> Password </label>
 								<Field type="password" name="password" className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" />
 
 								<div>
@@ -70,8 +70,8 @@ const LoginPage = () => {
 							</Form>
 						)}
 					</Formik>
-					<div>
-						<span>Not a user? <Link href="/signup" >Signup Now</Link></span>
+					<div className="text-center mt-2 pt-1">
+						<span>Not a user? <Link href="/signup" className="text-green-500">Signup Now</Link></span>
 					</div>
 				</div>
 			</div>

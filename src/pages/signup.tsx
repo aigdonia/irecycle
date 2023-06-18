@@ -55,12 +55,12 @@ const SignupPage = () => {
 	return (
 		<div className="min-h-screen bg-gray-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
 			<div className="sm:mx-auto sm:w-full sm:max-w-md">
-				<Image
+			<Image
 					className="text-center mx-auto pb-6"
 					src='/irecycle-logo.png'
 					alt="Logo"
-					width={60}
-					height={60}
+					width={196}
+					height={196}
 				/>
 				<h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">Register Free Account</h2>
 			</div>
@@ -78,19 +78,17 @@ const SignupPage = () => {
 					>
 						{(props) => (
 							<Form>
-								<label htmlFor="email" className="block text-sm font-medium text-gray-700">
-									Email
-								</label>
+								<label htmlFor="email" className="block text-sm font-medium text-gray-700 mt-2 mb-1"> Email </label>
 								<Field name="email" placeholder="Email" className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
 								</Field>
 
-								<label htmlFor="password" className="block text-sm font-medium text-gray-700"> Password </label>
-								<Field name="password" placeholder="Password" className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" />
+								<label htmlFor="password" className="block text-sm font-medium text-gray-700 mt-4 mb-1"> Password </label>
+								<Field name="password" type="password" placeholder="Password" className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" />
 
-								<label htmlFor="firstname" className="block text-sm font-medium text-gray-700"> First Name </label>
+								<label htmlFor="firstname" className="block text-sm font-medium text-gray-700 mt-4 mb-1"> First Name </label>
 								<Field name="firstname" className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" />
 
-								<label htmlFor="lastname" className="block text-sm font-medium text-gray-700"> Last Name </label>
+								<label htmlFor="lastname" className="block text-sm font-medium text-gray-700 mt-4 mb-1"> Last Name </label>
 								<Field name="lastname" className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" />
 
 								<div>

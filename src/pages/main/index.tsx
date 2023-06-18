@@ -35,10 +35,13 @@ export default function CustomerMainPage() {
 	const points = user?.points ?? 10;
 
 	const [requests, setRequests] = useState<PickupRequst[]>([])
+	const [upcomingPickup, setUpcomingPickup] = useState("")
 
 	useEffect(() => {
 		fetchPickups().then(r => {
 			setRequests(r);
+			const upcoming = r.find((i: any) => (i.status === "scheduled"))
+			setUpcomingPickup(upcoming?.date ?? undefined)
 		});
 	}, [])
 
@@ -58,15 +61,15 @@ export default function CustomerMainPage() {
 										<Title>Pickups</Title>
 										<Badge color="gray">{requests?.length ?? 0}</Badge>
 									</Flex>
-									<Button
-											color="emerald"
-											icon={TruckIcon}
-											variant="secondary"
-											size="xs"
-											onClick={() => scheduleDummyPickup()}
-										> Schedule Pickup! </Button>
+									{requests?.length > 0 && (<Button
+										color="emerald"
+										icon={TruckIcon}
+										variant="secondary"
+										size="xs"
+										onClick={() => scheduleDummyPickup()}
+									> Schedule Pickup! </Button>)}
 								</Flex>
-								{requests ? (<>
+								{requests?.length > 0 ? (<>
 									<Text className="mt-2">Here your recent pickups</Text>
 									<Table className="mt-6">
 										<TableHead>
@@ -83,7 +86,7 @@ export default function CustomerMainPage() {
 											{requests && requests?.map((item) => (
 												<TableRow key={item?.requestId}>
 													<TableCell>{shortenId(item?.requestId)}</TableCell>
-													<TableCell>{dayjs(item?.date).format('dddd DD MMM')}</TableCell>
+													<TableCell>{dayjs(item?.date).format('D MMMM YYYY')}</TableCell>
 													<TableCell>
 														<Badge color={colors[item?.status]} size="xs">
 															{item?.status}
@@ -102,12 +105,13 @@ export default function CustomerMainPage() {
 								</>) : (<>
 									<Flex flexDirection="col" className="h-full" justifyContent="center">
 										<Icon icon={ArchiveBoxIcon} size="xl" color="neutral" />
-										<h1 className="text-4xl text-neutral-400 mb-4">Schedule Your First Pickup Now!</h1>
+										<h1 className="text-4xl text-neutral-400 mb-2">Schedule Your First Pickup Now!</h1>
 										<Button
 											color="emerald"
 											icon={TruckIcon}
 											variant="secondary"
 											onClick={() => scheduleDummyPickup()}
+											className="my-12"
 										> Schedule First Pickup! </Button>
 									</Flex>
 								</>)}
@@ -132,7 +136,7 @@ export default function CustomerMainPage() {
 								</Card>
 
 								<MetricBox
-									label="Points"
+									label="Current Points"
 									metric={points.toString()}
 									icon={GiftIcon}
 									color="green"
@@ -141,16 +145,16 @@ export default function CustomerMainPage() {
 									]}
 								/>
 
-								<MetricBox
+								{upcomingPickup && (<MetricBox
 									label="Next Pickup"
-									metric="21 June"
+									metric={dayjs(upcomingPickup).format("DD MMMM")}
 									icon={TruckIcon}
 									color="blue"
 									links={[
 										{ text: "Reschedule", href: "/store" },
 										{ text: "All Pickups", href: "/store" },
 									]}
-								/>
+								/>)}
 							</div>
 						</Col>
 					</Grid>
@@ -175,26 +179,28 @@ const scheduleDummyPickup = async () => {
 	const res = await axios.post('/api/pickup-request', { date: "20/05/2023" })
 }
 
-// export async function getServerSideProps(ctx: GetServerSidePropsContext) {
+export async function getServerSideProps(ctx: GetServerSidePropsContext) {
 
-// 	const { req, res } = ctx
-// 	const session = await getServerSession(req, res, authOptions)
+	const { req, res } = ctx
+	const session = await getServerSession(req, res, authOptions)
 
-// 	if (!session) {
-// 		return { redirect: { destination: "/login", permenant: false } }
-// 	}
+	console.log("here are some stuff you need to know")
 
-// 	const currentUser = await User.findById(session?.user?.id);
+	if (!session) {
+		return { redirect: { destination: "/login", permenant: false } }
+	}
 
-// 	return {
-// 		props: {
-// 			session: {
-// 				user: {
-// 					name: session?.user?.name,
-// 					email: session?.user?.email,
-// 					points: currentUser?.points,
-// 				}
-// 			}
-// 		}
-// 	}
-// }
+	const currentUser = await User.findById(session?.user?.id);
+
+	return {
+		props: {
+			session: {
+				user: {
+					name: session?.user?.name,
+					email: session?.user?.email,
+					points: session?.user?.points,
+				}
+			}
+		}
+	}
+}

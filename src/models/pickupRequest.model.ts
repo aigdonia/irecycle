@@ -14,7 +14,7 @@ const pickupRequestSchema = new Schema({
 	status: {
 		type: String,
 		default: "scheduled",
-    enum: ['scheduled', 'complete', 'missed']
+    enum: ['scheduled', 'completed', 'missed']
 	}
 
 });

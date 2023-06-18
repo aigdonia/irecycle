@@ -11,6 +11,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 		return;
 	}
 
+	console.log(session)
+
 	const method = req.method;
 	
 
@@ -31,9 +33,9 @@ async function getUserRequests(user_id:string, limit=5) {
 
 async function scheduleDummyPickups(user_id:string) {
 	PickupRequest.insertMany([
-		{customer:user_id, driver: "64734eb249f911054edb2f67", scheduledDate: new Date("2023-06-05")},
-		{customer:user_id, driver: "64734eb249f911054edb2f67", scheduledDate: new Date("2023-05-05")},
-		{customer:user_id, driver: "64734eb249f911054edb2f67", scheduledDate: new Date("2023-04-05")},
-		{customer:user_id, driver: "64734eb249f911054edb2f67", scheduledDate: new Date("2023-03-05")}
+		{customer:user_id, driver: "64750b658a73635b451b9e72", scheduledDate: new Date("2023-06-05"), status: "scheduled"},
+		{customer:user_id, driver: "64750b658a73635b451b9e72", scheduledDate: new Date("2023-05-05"), status: "completed", rewardPoints: 100},
+		{customer:user_id, driver: "64750b658a73635b451b9e72", scheduledDate: new Date("2023-04-05"), status: "completed", rewardPoints: 115},
+		{customer:user_id, driver: "64750b658a73635b451b9e72", scheduledDate: new Date("2023-03-05"), status: "completed", rewardPoints: 100}
 	])
 }
